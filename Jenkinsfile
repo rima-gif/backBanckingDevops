@@ -11,7 +11,7 @@ pipeline {
         SONAR_PROJECT_KEY = 'backBankingdevops'
         APP_NAME = "backBankingDEVOPS"
         RELEASE = "1.0.0"
-        DOCKER_IMAGE = "rima603/backBankingDevops"
+        DOCKER_IMAGE = "rima603/backbankingdevops"
     }
 
     stages {
