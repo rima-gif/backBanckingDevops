@@ -12,6 +12,7 @@ pipeline {
         SONAR_PROJECT_KEY = 'backBankingdevops'
         APP_NAME = "backBankingDEVOPS"
         RELEASE = "1.0.0"
+        DOCKER_IMAGE = "rima603/backBankingDevops"
     }
 
     stages {
@@ -66,7 +67,34 @@ pipeline {
                 }
             }
         }
-    }
+        stage("Build Docker Image") {
+            steps {
+                script {
+                    sh """
+                        docker build -t ${DOCKER_IMAGE}:${RELEASE} .
+                        docker tag ${DOCKER_IMAGE}:${RELEASE} ${DOCKER_IMAGE}:latest
+                    """
+                }
+            }
+        }
+        stage ("Trivy Security Scan"){
+            steps {
+                sh "trivy image ${DOCKER_IMAGE}:${RELEASE}|| true"
+            }
+        }
+        stage("Push Docker Image"){
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER' , passwordVariable: 'DOCKER_PASS')] {
+                    sh """
+                        echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
+                        docker push ${DOCKER_IMAGE}:${RELEASE}
+                        docker push ${DOCKER_IMAGE}:latest
+                    """
+                }
+         }
+  }
+                                
+}
 
     post {
         always {
