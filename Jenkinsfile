@@ -10,7 +10,7 @@ pipeline {
     environment {
         MAVEN_OPTS = '-Xmx1024m'
         SONAR_PROJECT_KEY = 'backBankingdevops'
-        APP_NAME = "backdevops"
+        APP_NAME = "backBankingDEVOPS"
         RELEASE = "1.0.0"
     }
 
