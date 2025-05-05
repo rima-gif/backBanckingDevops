@@ -78,11 +78,15 @@ pipeline {
             }
         }
 
-        stage("Trivy Security Scan") {
-            steps {
-                sh "trivy image ${DOCKER_IMAGE}:${RELEASE} || true"
-            }
-        }
+      stage("Trivy Security Scan") {
+    steps {
+        sh """
+            export TRIVY_TIMEOUT=10m
+            trivy image ${DOCKER_IMAGE}:${RELEASE} || true
+        """
+    }
+}
+
 
         stage("Push Docker Image") {
             steps {
