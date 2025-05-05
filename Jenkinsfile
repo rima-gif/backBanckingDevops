@@ -1,4 +1,3 @@
-
 pipeline {
     agent { label 'jenkins-Agent' }
 
@@ -67,6 +66,7 @@ pipeline {
                 }
             }
         }
+
         stage("Build Docker Image") {
             steps {
                 script {
@@ -77,29 +77,30 @@ pipeline {
                 }
             }
         }
-        stage ("Trivy Security Scan"){
+
+        stage("Trivy Security Scan") {
             steps {
-                sh "trivy image ${DOCKER_IMAGE}:${RELEASE}|| true"
+                sh "trivy image ${DOCKER_IMAGE}:${RELEASE} || true"
             }
         }
-        stage("Push Docker Image"){
+
+        stage("Push Docker Image") {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER' , passwordVariable: 'DOCKER_PASS')] {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh """
                         echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
                         docker push ${DOCKER_IMAGE}:${RELEASE}
                         docker push ${DOCKER_IMAGE}:latest
                     """
                 }
-         }
-  }
-                                
-}
+            }
+        }
+    }
 
     post {
         always {
             // Nettoyage de l'espace de travail après l'exécution du pipeline
-            cleanWs() 
+            cleanWs()
         }
     }
 }
