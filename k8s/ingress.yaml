@@ -2,8 +2,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: backend-banka-ingress
+  namespace: default
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ingress.class: "nginx"  # Spécifie le contrôleur Nginx
 spec:
   rules:
     - host: api.local
@@ -15,4 +17,5 @@ spec:
               service:
                 name: backend-banka
                 port:
-                  number: 8080
+                  number: 8080  # Port du service backend
+
