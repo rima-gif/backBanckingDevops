@@ -19,3 +19,10 @@ spec:
           image: rima603/backbankingdevops:latest
           ports:
             - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql:3306/bankadb
+            - name: SPRING_DATASOURCE_USERNAM
+              value: root
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: 
