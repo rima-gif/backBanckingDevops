@@ -30,7 +30,7 @@ spec:
             - name: MYSQL_DATABASE
               value: bankadb
             - name: MYSQL_ROOT_PASSWORD
-              value: 
+              value: ""  
           ports:
             - containerPort: 3306
           volumeMounts:
