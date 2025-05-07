@@ -25,4 +25,4 @@ spec:
             - name: SPRING_DATASOURCE_USERNAME
               value: root
             - name: SPRING_DATASOURCE_PASSWORD
-              value: ""  # Mot de passe vide
+              value: root
