@@ -22,7 +22,7 @@ spec:
           env:
             - name: SPRING_DATASOURCE_URL
               value: jdbc:mysql://mysql:3306/bankadb
-            - name: SPRING_DATASOURCE_USERNAM
+            - name: SPRING_DATASOURCE_USERNAME
               value: root
             - name: SPRING_DATASOURCE_PASSWORD
-              value: 
+              value: ""  # Mot de passe vide
