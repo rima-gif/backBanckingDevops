@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
-  name: backend
+  name: backend-banka
   labels:
-    app: backend
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
-        app: backend
-    template:
-      metadata:
-        labels:
-          app: backend
-      spec:
-        containers:
-          - name: backend
-            image: rima603/backbankingdevops:latest
-            ports:
-              - containerPort: 8080
+    app: backend-banka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-banka
+  template:
+    metadata:
+      labels:
+        app: backend-banka
+    spec:
+      containers:
+        - name: backend
+          image: rima603/backbankingdevops:latest
+          ports:
+            - containerPort: 8080
