@@ -1,4 +1,4 @@
-pipeline {
+ pipeline {
     agent { label 'jenkins-Agent' }
 
     tools {
@@ -71,21 +71,22 @@ pipeline {
             steps {
                 script {
                     sh """
-                        docker build -t ${DOCKER_IMAGE}:${RELEASE} . 
+                        docker build -t ${DOCKER_IMAGE}:${RELEASE} .
                         docker tag ${DOCKER_IMAGE}:${RELEASE} ${DOCKER_IMAGE}:latest
                     """
                 }
             }
         }
 
-        stage("Trivy Security Scan") {
-            steps {
-                sh """
-                    export TRIVY_TIMEOUT=10m
-                    trivy image ${DOCKER_IMAGE}:${RELEASE} || true
-                """
-            }
-        }
+      stage("Trivy Security Scan") {
+    steps {
+        sh """
+            export TRIVY_TIMEOUT=10m
+            trivy image ${DOCKER_IMAGE}:${RELEASE} || true
+        """
+    }
+}
+
 
         stage("Push Docker Image") {
             steps {
@@ -98,36 +99,6 @@ pipeline {
                 }
             }
         }
-
-        stage("Update k8s deployment in GitHub repo") {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
-                    script {
-                        // Cloner le repository Git contenant les fichiers Kubernetes
-                        sh """
-                            git clone https://${GIT_USER}:${GIT_PASS}@github.com/rima-gif/rima-gif.git k8s-repo
-                        """
-
-                        // Se rendre dans le dossier contenant le fichier de déploiement Kubernetes
-                        dir("k8s-repo/k8s") {
-                            // Mettre à jour l'image dans deployment.yaml avec la nouvelle image
-                            sh """
-                                sed -i "s|image: .*|image: ${DOCKER_IMAGE}:${RELEASE}|g" deployment.yaml
-                            """
-
-                            // Configurer git et pousser les changements
-                            sh """
-                                git config user.email "jenkins@ci.local"
-                                git config user.name "jenkins"
-                                git add deployment.yaml
-                                git commit -m "Update backend image to ${DOCKER_IMAGE}:${RELEASE}"
-                                git push origin main
-                            """
-                        }
-                    }
-                }
-            }
-        }
     }
 
     post {
@@ -136,4 +107,4 @@ pipeline {
             cleanWs()
         }
     }
-}
+} 
