@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: backend-banka
 spec:
+  type: NodePort
   selector:
     app: backend-banka
   ports:
-    - protocol: TCP
-      port: 8080
+    - port: 80
       targetPort: 8080
-  type: ClusterIP
+      nodePort: 30081
